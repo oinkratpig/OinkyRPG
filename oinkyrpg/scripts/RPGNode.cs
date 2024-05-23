@@ -6,7 +6,7 @@ namespace OinkyRPG;
 /// An object taking space within a <see cref="RPGGrid"/>.
 /// </summary>
 [Tool]
-public abstract partial class RPGGridNode : Node2D
+public abstract partial class RPGNode : Node2D
 {
     /// <summary>
     /// The grid being used.
@@ -23,6 +23,12 @@ public abstract partial class RPGGridNode : Node2D
 
     private RPGGrid _grid;
 
+    public override void _EnterTree()
+    {
+        Grid = TrySetGridParent();
+
+    } // end _EnterTree
+
     /// <summary>
     /// Attempt to set <see cref="Grid"/>.<br/>
     /// Prints an error if none are found.
@@ -36,4 +42,4 @@ public abstract partial class RPGGridNode : Node2D
 
     } // end TrySetGridParent
 
-} // end class RPGGridNode
+} // end class RPGNode

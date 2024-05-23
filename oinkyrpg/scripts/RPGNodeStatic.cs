@@ -7,14 +7,20 @@ namespace OinkyRPG;
 /// Changing position will immediately update its location.
 /// </summary>
 [Tool]
-public partial class RPGGridStatic : RPGGridNode
+public partial class RPGNodeStatic : RPGNode
 {
     [ExportGroup("Position")]
     [Export]
     public Vector2I GridPosition
     {
-        get { return Grid.ToGridCoords(GlobalPosition); }
-        set { GlobalPosition = Grid.ToGlobalPosition(value); }
+        get
+        {
+            return Grid.ToGridCoords(GlobalPosition);
+        }
+        set
+        {
+            GlobalPosition = Grid.ToGlobalPosition(value);
+        }
     }
 
     public override bool _Set(StringName property, Variant value)
@@ -34,4 +40,4 @@ public partial class RPGGridStatic : RPGGridNode
 
     } // end _Set
 
-} // end class RPGGridStatic
+} // end class RPGNodeStatic

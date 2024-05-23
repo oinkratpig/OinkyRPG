@@ -8,7 +8,7 @@ namespace OinkyRPG;
 /// Changing position will result in a movement animation.
 /// </summary>
 [Tool]
-public partial class RPGGridMoveable : RPGGridNode
+public partial class RPGNodeMoveable : RPGNode
 {
     /// <summary>
     /// Determines how movement is handled.<br/>
@@ -17,6 +17,11 @@ public partial class RPGGridMoveable : RPGGridNode
     /// <see cref="Teleport"/>: Teleports into place immediately.
     /// </summary>
     public enum MovementModes { Lerp, Speed, Teleport }
+
+    /// <summary>
+    /// Whether this moveable will detect interactable objects.
+    /// </summary>
+    [Export] public bool Interact { get; private set; }
 
     [ExportGroup("Movement")]
     [Export] private MovementModes MovementMode { get; set; } = MovementModes.Lerp;
@@ -35,8 +40,10 @@ public partial class RPGGridMoveable : RPGGridNode
         set
         {
             _destination = new Vector2(value.X.SnapTo(Grid.TileWidth), value.Y.SnapTo(Grid.TileHeight));
+            LookAngle = Mathf.RadToDeg(GlobalPosition.AngleToPoint(_destination)).FixAngleDegrees().SnapTo(45);
             if (Engine.IsEditorHint())
                 GlobalPosition = _destination;
+
             _moving = true;
         }
     }
@@ -49,18 +56,20 @@ public partial class RPGGridMoveable : RPGGridNode
     public Vector2I DestinationGrid
     {
         get { return Grid.ToGridCoords(Destination); }
-        set { Destination = Grid.ToGlobalPosition(value); }
+        set
+        {
+            Destination = Grid.ToGlobalPosition(value);
+        }
     }
+
+    /// <summary>
+    /// Last angle of movement.<br/>
+    /// (When destination is changed, the angle is calculated from current position to destination).
+    /// </summary>
+    public float LookAngle { get; private set; }
 
     private Vector2 _destination;
     private bool _moving = false;
-
-    public override void _Ready()
-    {
-        base._Ready();
-        Destination = GlobalPosition;
-
-    } // end _Ready
 
     public override void _PhysicsProcess(double delta)
     {
@@ -85,4 +94,4 @@ public partial class RPGGridMoveable : RPGGridNode
         
     } // end _PhysicsProcess
 
-} // end class RPGGridMoveable
+} // end class RPGNodeMoveable

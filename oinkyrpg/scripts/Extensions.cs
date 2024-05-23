@@ -21,6 +21,17 @@ public static class Extensions
     } // end SnapTo
 
     /// <summary>
+    /// Clamps an angle in degrees between 0 and 360.
+    /// </summary>
+    public static float FixAngleDegrees(this float angle)
+    {
+        while (angle > 360) angle -= 360;
+        while (angle < 0) angle += 360;
+        return angle;
+
+    } // end FixAngle
+
+    /// <summary>
     /// Get a <see cref="Node"/>'s closest parent of type.
     /// </summary>
     /// <returns>Parent of type or default.</returns>

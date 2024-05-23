@@ -3,7 +3,7 @@ using Godot;
 namespace OinkyRPG;
 
 /// <summary>
-/// A grid used by all <see cref="RPGGridNode"/> children.
+/// A grid used by all <see cref="RPGNode"/> children.
 /// </summary>
 [Tool]
 public partial class RPGGrid : Node
