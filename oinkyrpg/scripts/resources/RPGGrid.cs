@@ -25,11 +25,39 @@ public partial class RPGGrid : Resource
     /// </summary>
     public List<RPGInteractable> Interactables { get; internal set; }
 
+    /// <summary>
+    /// Collection of all nodes that are marked for collision.
+    /// </summary>
+    public List<ICollidable> CollisionNodes { get; internal set; }
+
     public RPGGrid()
     {
         Interactables = new();
+        CollisionNodes = new();
 
     } // end constructor
+
+    /// <summary>
+    /// Whether or not the tile with the given coordinates is marked as collision.
+    /// </summary>
+    public bool IsTileCollision(Vector2I gridPosition)
+    {
+        foreach(ICollidable collidable in CollisionNodes)
+        {
+            if(collidable is RPGNodeMoveable moveable &&
+                gridPosition == moveable.DestinationGrid)
+            {
+                return true;
+            }
+            else if(collidable is RPGNodeStatic @static &&
+                gridPosition == @static.GridPosition)
+            {
+                return true;
+            }
+        }
+        return false;
+
+    } // end IsTileCollision
 
     /// <summary>
     /// Converts a global position to grid coordinates.

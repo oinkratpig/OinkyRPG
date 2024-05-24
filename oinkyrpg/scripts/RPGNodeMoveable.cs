@@ -1,6 +1,5 @@
 ﻿using Godot;
-using System.Diagnostics;
-using System.Security.Cryptography.X509Certificates;
+using System;
 
 namespace OinkyRPG;
 
@@ -9,7 +8,7 @@ namespace OinkyRPG;
 /// Changing position will result in a movement animation.
 /// </summary>
 [Tool]
-public partial class RPGNodeMoveable : RPGNode
+public partial class RPGNodeMoveable : RPGNode, ICollidable
 {
     /// <summary>
     /// Determines how movement is handled.<br/>
@@ -21,14 +20,27 @@ public partial class RPGNodeMoveable : RPGNode
     public enum MovementModes { Speed, Lerp, Mixed, Teleport }
 
     /// <summary>
+    /// Whether or not <see cref="RPGNodeMoveable"/>s can collide with this.
+    /// </summary>
+    [Export]
+    public bool Collision
+    {
+        get { return _collision; }
+        private set
+        {
+            if (_collision == value) return;
+            _collision = value;
+            if (_collision)
+                Grid.CollisionNodes.Add(this);
+            else
+                Grid.CollisionNodes.Remove(this);
+        }
+    }
+
+    /// <summary>
     /// Whether this moveable will detect interactable objects.
     /// </summary>
-    [Export] public bool InteractingEnabled { get; private set; }
-
-    [ExportGroup("Movement")]
-    [Export] public MovementModes MovementMode { get; set; } = MovementModes.Speed;
-    [Export] public float LerpValue { get; set; } = 0.1f;
-    [Export] public float SpeedValue { get; set; } = 4f;
+    [Export] public bool Interacting { get; private set; }
 
     /// <summary>
     /// The desired destination that the node will move to.<br/>
@@ -41,6 +53,11 @@ public partial class RPGNodeMoveable : RPGNode
         get { return Grid.ToGridCoords(Destination); }
         private set { Destination = Grid.ToGlobalPosition(value); }
     }
+
+    [ExportGroup("Movement")]
+    [Export] public MovementModes MovementMode { get; set; } = MovementModes.Speed;
+    [Export] public float LerpValue { get; set; } = 0.1f;
+    [Export] public float SpeedValue { get; set; } = 4f;
 
     /// <summary>
     /// The desired destination that the node will move to.<br/>
@@ -73,6 +90,7 @@ public partial class RPGNodeMoveable : RPGNode
     /// </summary>
     public RPGInteractable ActiveInteractable { get; private set; }
 
+    private bool _collision;
     private Vector2 _destination;
 
     public override void _PhysicsProcess(double delta)
@@ -95,7 +113,7 @@ public partial class RPGNodeMoveable : RPGNode
                 GlobalPosition = Destination;
 
                 // Find interactable in front of moveable
-                if (InteractingEnabled)
+                if (Interacting)
                 {
                     Vector2I facing = new Vector2I(
                         Mathf.RoundToInt(DestinationGrid.X + Mathf.Cos(Mathf.DegToRad(LookAngle))),
@@ -136,12 +154,20 @@ public partial class RPGNodeMoveable : RPGNode
     } // end _Set
 
     /// <summary>
-    /// Move player's grid position by the given amount.
+    /// Move player's grid position by one tile in given combination of directions.
     /// </summary>
-    public void Move(Vector2I amount)
+    public void Move(bool west, bool east, bool north, bool south)
     {
-        if(amount != Vector2I.Zero)
-            DestinationGrid += amount;
+        Vector2I destination = DestinationGrid + new Vector2I(-west.AsInt() + east.AsInt(), -north.AsInt() + south.AsInt());
+
+        // If no movement made or would collide, don't move
+        if (!(west || east || north || south) ||
+            Grid.IsTileCollision(destination))
+        {
+            return;
+        }
+
+        DestinationGrid = destination;
 
     } // end Move
 

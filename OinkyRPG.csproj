@@ -5,4 +5,8 @@
     <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'ios' ">net8.0</TargetFramework>
     <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="oinkyrpg\scripts\defaults\**" />
+    <EmbeddedResource Remove="oinkyrpg\scripts\defaults\**" />
+  </ItemGroup>
 </Project>

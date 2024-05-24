@@ -1,4 +1,5 @@
 ﻿using Godot;
+using System;
 
 namespace OinkyRPG;
 
@@ -30,6 +31,16 @@ public static class Extensions
         return angle;
 
     } // end FixAngle
+
+    /// <summary>
+    /// Returns a bool as an int.<br/>
+    /// (true = 1, false = 0)
+    /// </summary>
+    public static int AsInt(this bool @bool)
+    {
+        return @bool ? 1 : 0;
+
+    } // end AsInt
 
     /// <summary>
     /// Get a <see cref="Node"/>'s closest parent of type.

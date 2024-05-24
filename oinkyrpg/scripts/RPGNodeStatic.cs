@@ -7,8 +7,29 @@ namespace OinkyRPG;
 /// Changing position will immediately update its location.
 /// </summary>
 [Tool]
-public partial class RPGNodeStatic : RPGNode
+public partial class RPGNodeStatic : RPGNode, ICollidable
 {
+    /// <summary>
+    /// Whether or not <see cref="RPGNodeMoveable"/>s can collide with this.
+    /// </summary>
+    [Export]
+    public bool Collision
+    {
+        get { return _collision; }
+        private set
+        {
+            if (_collision == value) return;
+            _collision = value;
+            if (_collision)
+                Grid.CollisionNodes.Add(this);
+            else
+                Grid.CollisionNodes.Remove(this);
+        }
+    }
+
+    /// <summary>
+    /// Current position in the grid.
+    /// </summary>
     [Export]
     public Vector2I GridPosition
     {
@@ -18,6 +39,8 @@ public partial class RPGNodeStatic : RPGNode
             GlobalPosition = Grid.ToGlobalPosition(value);
         }
     }
+
+    private bool _collision;
 
     public override bool _Set(StringName property, Variant value)
     {

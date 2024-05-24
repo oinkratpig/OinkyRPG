@@ -13,7 +13,7 @@ public partial class RPGExamplePlayerController : Node
             HandleMove(ref move, "rpg_example_move_south", 0, 1);
         if (!HandleMove(ref move, "rpg_example_move_west", -1, 0))
             HandleMove(ref move, "rpg_example_move_east", 1, 0);
-        _player.Move(move);
+        _player.Move(move.X < 0, move.X > 0, move.Y < 0, move.Y > 0);
 
     } // end _Input
 

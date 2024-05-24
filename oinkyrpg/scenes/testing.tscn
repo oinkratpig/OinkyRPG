@@ -11,7 +11,7 @@
 [node name="Player" type="Node2D" parent="."]
 position = Vector2(32, 32)
 script = ExtResource("2_kntjl")
-InteractingEnabled = true
+Interacting = true
 DestinationGrid = Vector2i(1, 1)
 Grid = ExtResource("5_03m1a")
 
@@ -26,7 +26,9 @@ _player = NodePath("..")
 
 [node name="Interactable" type="Node2D" parent="."]
 position = Vector2(128, 128)
+scale = Vector2(0.992366, 1)
 script = ExtResource("5_yivan")
+Collision = true
 GridPosition = Vector2i(4, 4)
 Grid = ExtResource("5_03m1a")
 
