@@ -1,12 +1,11 @@
 ﻿using Godot;
-using Godot.Collections;
-using System.Collections.Generic;
 
 namespace OinkyRPG;
 
 /// <summary>
 /// An interactable object on the grid.
 /// </summary>
+[Tool]
 public partial class RPGInteractable : RPGNodeStatic
 {
     /// <summary>
@@ -32,10 +31,9 @@ public partial class RPGInteractable : RPGNodeStatic
         base._Ready();
         if (Engine.IsEditorHint()) return;
 
-        //Grid.AddInteractable(this);
         OnInteracted = (RPGNodeMoveable sender) => { GD.Print("Interacted!"); };
-        OnBeginActive = (RPGNodeMoveable sender) => { GD.Print("Begin Hover!"); };
-        OnEndActive = (RPGNodeMoveable sender) => { GD.Print("End hover!"); };
+        //OnBeginActive = (RPGNodeMoveable sender) => { GD.Print("Begin Hover!"); };
+        //OnEndActive = (RPGNodeMoveable sender) => { GD.Print("End hover!"); };
 
     } // end TrySetGridParent
 

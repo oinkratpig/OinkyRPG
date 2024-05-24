@@ -19,6 +19,10 @@ config/icon="res://icon.svg"
 
 project/assembly_name="OinkyRPG"
 
+[filesystem]
+
+import/blender/enabled=false
+
 [input]
 
 rpg_example_move_east={

@@ -6,9 +6,9 @@ namespace OinkyRPG;
 /// An object within a <see cref="RPGGrid"/>.<br/>
 /// Changing position will immediately update its location.
 /// </summary>
+[Tool]
 public partial class RPGNodeStatic : RPGNode
 {
-    [ExportGroup("Position")]
     [Export]
     public Vector2I GridPosition
     {
@@ -22,7 +22,7 @@ public partial class RPGNodeStatic : RPGNode
     public override bool _Set(StringName property, Variant value)
     {
         // Force position to always snap to grid
-        if (property == "position" || property == "global_position")
+        if (property == PropertyName.Position || property == PropertyName.GlobalPosition)
         {
             Vector2 newPosition = value.AsVector2();
             GlobalPosition = new Vector2(newPosition.X.SnapTo(Grid.TileWidth), newPosition.Y.SnapTo(Grid.TileHeight));

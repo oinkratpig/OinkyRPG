@@ -8,6 +8,7 @@ namespace OinkyRPG;
 /// An object within a <see cref="RPGGrid"/>.<br/>
 /// Changing position will result in a movement animation.
 /// </summary>
+[Tool]
 public partial class RPGNodeMoveable : RPGNode
 {
     /// <summary>
@@ -31,10 +32,20 @@ public partial class RPGNodeMoveable : RPGNode
 
     /// <summary>
     /// The desired destination that the node will move to.<br/>
+    /// Uses grid coordinates instead of global position.
+    /// </summary>
+    /// [ExportGroup("Position")]
+    [Export]
+    public Vector2I DestinationGrid
+    {
+        get { return Grid.ToGridCoords(Destination); }
+        private set { Destination = Grid.ToGlobalPosition(value); }
+    }
+
+    /// <summary>
+    /// The desired destination that the node will move to.<br/>
     /// Uses global position rather than grid coordiantes.
     /// </summary>
-    [ExportGroup("Position")]
-    [Export]
     public Vector2 Destination
     {
         get { return _destination; }
@@ -47,17 +58,6 @@ public partial class RPGNodeMoveable : RPGNode
 
             Moving = true;
         }
-    }
-
-    /// <summary>
-    /// The desired destination that the node will move to.<br/>
-    /// Uses grid coordinates instead of global position.
-    /// </summary>
-    [Export]
-    public Vector2I DestinationGrid
-    {
-        get { return Grid.ToGridCoords(Destination); }
-        private set { Destination = Grid.ToGlobalPosition(value); }
     }
 
     public bool Moving { get; private set; } = false;
@@ -118,6 +118,22 @@ public partial class RPGNodeMoveable : RPGNode
         }
         
     } // end _PhysicsProcess
+
+    public override bool _Set(StringName property, Variant value)
+    {
+        // Force position to always snap to grid
+        if (Engine.IsEditorHint() &&
+            (property == PropertyName.Position || property == PropertyName.GlobalPosition))
+        {
+            Vector2 newPosition = value.AsVector2();
+            GlobalPosition = new Vector2(newPosition.X.SnapTo(Grid.TileWidth), newPosition.Y.SnapTo(Grid.TileHeight));
+            Destination = GlobalPosition;
+            return true;
+        }
+
+        return false;
+
+    } // end _Set
 
     /// <summary>
     /// Move player's grid position by the given amount.

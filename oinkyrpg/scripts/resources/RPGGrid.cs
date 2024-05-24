@@ -7,6 +7,7 @@ namespace OinkyRPG;
 /// A grid used by all RPG nodes.
 /// </summary>
 [GlobalClass]
+[Tool]
 public partial class RPGGrid : Resource
 {
     /// <summary>
