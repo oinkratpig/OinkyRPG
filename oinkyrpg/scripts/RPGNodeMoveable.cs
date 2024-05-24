@@ -69,7 +69,6 @@ public partial class RPGNodeMoveable : RPGNode, ICollidable
         private set
         {
             _destination = new Vector2(value.X.SnapTo(Grid.TileWidth), value.Y.SnapTo(Grid.TileHeight));
-            LookAngle = Mathf.RadToDeg(GlobalPosition.AngleToPoint(_destination)).FixAngleDegrees().SnapTo(45);
             if (Engine.IsEditorHint() || MovementMode == MovementModes.Teleport)
                 GlobalPosition = _destination;
 
@@ -166,6 +165,8 @@ public partial class RPGNodeMoveable : RPGNode, ICollidable
         Vector2I hor = new Vector2I(-west.AsInt() + east.AsInt(), 0);
         Vector2I vert = new Vector2I(0, -north.AsInt() + south.AsInt());
 
+        LookAngle = Mathf.RadToDeg(((Vector2)destination).AngleToPoint(destination + hor + vert)).FixAngleDegrees().SnapTo(45);
+
         // Horizontal collision
         if (!Grid.IsTileCollision(destination + hor))
             destination += hor;
@@ -174,6 +175,7 @@ public partial class RPGNodeMoveable : RPGNode, ICollidable
             destination += vert;
 
         DestinationGrid = destination;
+
         return true;
 
     } // end MoveInDirection

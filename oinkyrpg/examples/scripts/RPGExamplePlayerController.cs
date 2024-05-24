@@ -27,6 +27,7 @@ public partial class RPGExamplePlayerController : Node
 
     public override void _PhysicsProcess(double delta)
     {
+        // Movement
         Vector2I move = Vector2I.Zero;
         foreach (StringName input in _movementInputQueue)
             move += _inputVectors[input];
@@ -36,6 +37,7 @@ public partial class RPGExamplePlayerController : Node
 
     public override void _Input(InputEvent @event)
     {
+        // Movement
         foreach (StringName input in _inputVectors.Keys)
             if (@event.IsAction(input))
             {
@@ -44,6 +46,10 @@ public partial class RPGExamplePlayerController : Node
                 if (!Input.IsActionPressed(input))
                     _movementInputQueue.Remove(input);
             }
+
+        // Interact
+        if (Input.IsActionJustPressed("rpg_example_interact"))
+            _player.ActiveInteractable?.OnInteracted?.Invoke(_player);
 
     } // end _Input
 

@@ -1,25 +1,39 @@
-[gd_scene load_steps=8 format=3 uid="uid://basbs6pogyo6w"]
+[gd_scene load_steps=9 format=3 uid="uid://basbs6pogyo6w"]
 
 [ext_resource type="Script" path="res://oinkyrpg/scripts/RPGNodeMoveable.cs" id="2_kntjl"]
-[ext_resource type="Texture2D" uid="uid://dy3k1gebfkwqc" path="res://icon.svg" id="3_ashki"]
 [ext_resource type="Script" path="res://oinkyrpg/examples/scripts/RPGExamplePlayerController.cs" id="4_qjbwd"]
 [ext_resource type="Resource" uid="uid://t4jkv4a3qwux" path="res://oinkyrpg/defaults/Grid.tres" id="5_03m1a"]
+[ext_resource type="Texture2D" uid="uid://bq440suwtrkk" path="res://oinkyrpg/examples/sprites/dapigboy.png" id="5_rvfmr"]
 [ext_resource type="Script" path="res://oinkyrpg/scripts/RPGInteractable.cs" id="5_yivan"]
 [ext_resource type="TileSet" uid="uid://c2gkvpv4m75oe" path="res://oinkyrpg/examples/resources/tileset.tres" id="6_oiu4p"]
 [ext_resource type="Script" path="res://oinkyrpg/scripts/RPGTilemap.cs" id="7_nfp3n"]
+[ext_resource type="Texture2D" uid="uid://n47cldr5jt0c" path="res://oinkyrpg/examples/sprites/thedude.png" id="8_vm0g4"]
 
 [node name="root" type="Node"]
 
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(145, 120)
+zoom = Vector2(1.605, 1.605)
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource("6_oiu4p")
+format = 2
+layer_0/tile_data = PackedInt32Array(0, 131073, 0, 1, 131073, 0, 65536, 131073, 0, 131072, 131073, 0, 196608, 131073, 0, 262144, 131073, 0, 327680, 131073, 0, 393216, 131073, 0, 393217, 131073, 0, 393218, 131073, 0, 393219, 131073, 0, 393220, 131073, 0, 393221, 131073, 0, 393222, 131073, 0, 393223, 131073, 0, 2, 131073, 0, 3, 131073, 0, 4, 131073, 0, 5, 131073, 0, 6, 131073, 0, 7, 131073, 0, 8, 131073, 0, 65544, 131073, 0, 131080, 131073, 0, 196616, 131073, 0, 262152, 131073, 0, 327688, 131073, 0, 393224, 131073, 0, 65537, 65537, 0, 65538, 65537, 0, 65539, 65537, 0, 65540, 65537, 0, 65541, 65537, 0, 65542, 65537, 0, 65543, 65537, 0, 458760, 65537, 0, 458759, 65537, 0, 458758, 65537, 0, 458757, 65537, 0, 458756, 65537, 0, 458755, 65537, 0, 458754, 65537, 0, 458753, 65537, 0, 458752, 65537, 0)
+layer_1/tile_data = PackedInt32Array(131073, 196609, 0, 196609, 196609, 0, 262145, 196609, 0, 327682, 196609, 0, 262146, 196609, 0, 196610, 196609, 0, 131074, 196609, 0, 327681, 196609, 0, 196611, 196609, 0, 131075, 196609, 0, 131076, 196609, 0, 131077, 196609, 0, 196613, 196609, 0, 196612, 196609, 0, 131078, 196609, 0, 196614, 196609, 0, 196615, 196609, 0, 262151, 196609, 0, 262150, 196609, 0, 131079, 196609, 0, 327686, 196609, 0, 327685, 196609, 0, 327684, 196609, 0, 327683, 196609, 0, 262147, 196609, 0, 262148, 196609, 0, 262149, 196609, 0, 327687, 196609, 0)
+script = ExtResource("7_nfp3n")
+CollisionLayers = PackedInt32Array(0)
+Grid = ExtResource("5_03m1a")
+
 [node name="Player" type="Node2D" parent="."]
-position = Vector2(64, 64)
+position = Vector2(32, 64)
 script = ExtResource("2_kntjl")
 Interacting = true
-DestinationGrid = Vector2i(2, 2)
+DestinationGrid = Vector2i(1, 2)
 Grid = ExtResource("5_03m1a")
 
 [node name="Sprite2D" type="Sprite2D" parent="Player"]
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("3_ashki")
+texture_filter = 1
+texture = ExtResource("5_rvfmr")
 centered = false
 
 [node name="Controller" type="Node" parent="Player" node_paths=PackedStringArray("_player")]
@@ -35,14 +49,6 @@ GridPosition = Vector2i(5, 4)
 Grid = ExtResource("5_03m1a")
 
 [node name="Sprite2D" type="Sprite2D" parent="Interactable"]
-scale = Vector2(0.25, 0.25)
-texture = ExtResource("3_ashki")
+texture_filter = 1
+texture = ExtResource("8_vm0g4")
 centered = false
-
-[node name="TileMap" type="TileMap" parent="."]
-tile_set = ExtResource("6_oiu4p")
-format = 2
-layer_0/tile_data = PackedInt32Array(0, 131073, 0, 1, 131073, 0, 65536, 131073, 0, 131072, 131073, 0, 196608, 131073, 0, 262144, 131073, 0, 327680, 131073, 0, 393216, 131073, 0, 393217, 131073, 0, 393218, 131073, 0, 393219, 131073, 0, 393220, 131073, 0, 393221, 131073, 0, 393222, 131073, 0, 393223, 131073, 0, 2, 131073, 0, 3, 131073, 0, 4, 131073, 0, 5, 131073, 0, 6, 131073, 0, 7, 131073, 0, 8, 131073, 0, 65544, 131073, 0, 131080, 131073, 0, 196616, 131073, 0, 262152, 131073, 0, 327688, 131073, 0, 393224, 131073, 0, 65537, 65537, 0, 65538, 65537, 0, 65539, 65537, 0, 65540, 65537, 0, 65541, 65537, 0, 65542, 65537, 0, 65543, 65537, 0, 458760, 65537, 0, 458759, 65537, 0, 458758, 65537, 0, 458757, 65537, 0, 458756, 65537, 0, 458755, 65537, 0, 458754, 65537, 0, 458753, 65537, 0, 458752, 65537, 0)
-script = ExtResource("7_nfp3n")
-CollisionLayers = PackedInt32Array(0)
-Grid = ExtResource("5_03m1a")
