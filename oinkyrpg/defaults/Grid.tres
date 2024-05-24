@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="RPGGrid" load_steps=2 format=3 uid="uid://t4jkv4a3qwux"]
+
+[ext_resource type="Script" path="res://oinkyrpg/scripts/resources/RPGGrid.cs" id="1_n0d47"]
+
+[resource]
+script = ExtResource("1_n0d47")
+TileWidth = 32.0
+TileHeight = 32.0
