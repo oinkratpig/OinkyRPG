@@ -44,6 +44,15 @@ public partial class RPGGrid : Resource
     } // end constructor
 
     /// <summary>
+    /// Returns the default grid.
+    /// </summary>
+    public static RPGGrid LoadDefaultGrid()
+    {
+        return ResourceLoader.Load<RPGGrid>("res://oinkyrpg/defaults/Grid.tres");
+
+    } // end LoadDefaultGrid
+
+    /// <summary>
     /// Whether or not the tile with the given coordinates is marked as collision.
     /// </summary>
     public bool IsTileCollision(Vector2I gridPosition)

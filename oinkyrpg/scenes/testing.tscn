@@ -1,18 +1,20 @@
-[gd_scene load_steps=6 format=3 uid="uid://basbs6pogyo6w"]
+[gd_scene load_steps=8 format=3 uid="uid://basbs6pogyo6w"]
 
 [ext_resource type="Script" path="res://oinkyrpg/scripts/RPGNodeMoveable.cs" id="2_kntjl"]
 [ext_resource type="Texture2D" uid="uid://dy3k1gebfkwqc" path="res://icon.svg" id="3_ashki"]
-[ext_resource type="Script" path="res://oinkyrpg/scripts/examples/RPGExamplePlayerController.cs" id="4_qjbwd"]
+[ext_resource type="Script" path="res://oinkyrpg/examples/scripts/RPGExamplePlayerController.cs" id="4_qjbwd"]
 [ext_resource type="Resource" uid="uid://t4jkv4a3qwux" path="res://oinkyrpg/defaults/Grid.tres" id="5_03m1a"]
 [ext_resource type="Script" path="res://oinkyrpg/scripts/RPGInteractable.cs" id="5_yivan"]
+[ext_resource type="TileSet" uid="uid://c2gkvpv4m75oe" path="res://oinkyrpg/examples/resources/tileset.tres" id="6_oiu4p"]
+[ext_resource type="Script" path="res://oinkyrpg/scripts/RPGTilemap.cs" id="7_nfp3n"]
 
 [node name="root" type="Node"]
 
 [node name="Player" type="Node2D" parent="."]
-position = Vector2(32, 32)
+position = Vector2(64, 64)
 script = ExtResource("2_kntjl")
 Interacting = true
-DestinationGrid = Vector2i(1, 1)
+DestinationGrid = Vector2i(2, 2)
 Grid = ExtResource("5_03m1a")
 
 [node name="Sprite2D" type="Sprite2D" parent="Player"]
@@ -25,14 +27,22 @@ script = ExtResource("4_qjbwd")
 _player = NodePath("..")
 
 [node name="Interactable" type="Node2D" parent="."]
-position = Vector2(128, 128)
+position = Vector2(160, 128)
 scale = Vector2(0.992366, 1)
 script = ExtResource("5_yivan")
 Collision = true
-GridPosition = Vector2i(4, 4)
+GridPosition = Vector2i(5, 4)
 Grid = ExtResource("5_03m1a")
 
 [node name="Sprite2D" type="Sprite2D" parent="Interactable"]
 scale = Vector2(0.25, 0.25)
 texture = ExtResource("3_ashki")
 centered = false
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = ExtResource("6_oiu4p")
+format = 2
+layer_0/tile_data = PackedInt32Array(0, 131073, 0, 1, 131073, 0, 65536, 131073, 0, 131072, 131073, 0, 196608, 131073, 0, 262144, 131073, 0, 327680, 131073, 0, 393216, 131073, 0, 393217, 131073, 0, 393218, 131073, 0, 393219, 131073, 0, 393220, 131073, 0, 393221, 131073, 0, 393222, 131073, 0, 393223, 131073, 0, 2, 131073, 0, 3, 131073, 0, 4, 131073, 0, 5, 131073, 0, 6, 131073, 0, 7, 131073, 0, 8, 131073, 0, 65544, 131073, 0, 131080, 131073, 0, 196616, 131073, 0, 262152, 131073, 0, 327688, 131073, 0, 393224, 131073, 0, 65537, 65537, 0, 65538, 65537, 0, 65539, 65537, 0, 65540, 65537, 0, 65541, 65537, 0, 65542, 65537, 0, 65543, 65537, 0, 458760, 65537, 0, 458759, 65537, 0, 458758, 65537, 0, 458757, 65537, 0, 458756, 65537, 0, 458755, 65537, 0, 458754, 65537, 0, 458753, 65537, 0, 458752, 65537, 0)
+script = ExtResource("7_nfp3n")
+CollisionLayers = PackedInt32Array(0)
+Grid = ExtResource("5_03m1a")

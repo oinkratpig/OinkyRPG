@@ -159,11 +159,19 @@ public partial class RPGNodeMoveable : RPGNode, ICollidable
     /// <returns>If successful.</returns>
     public bool MoveInDirection(bool west, bool east, bool north, bool south)
     {
-        Vector2I destination = DestinationGrid + new Vector2I(-west.AsInt() + east.AsInt(), -north.AsInt() + south.AsInt());
+        // Can't move
+        if (Moving || !(west || east || north || south)) return false;
 
-        // If no movement made or would collide, don't move
-        if (Moving || !(west || east || north || south) || Grid.IsTileCollision(destination))
-            return false;
+        Vector2I destination = DestinationGrid;
+        Vector2I hor = new Vector2I(-west.AsInt() + east.AsInt(), 0);
+        Vector2I vert = new Vector2I(0, -north.AsInt() + south.AsInt());
+
+        // Horizontal collision
+        if (!Grid.IsTileCollision(destination + hor))
+            destination += hor;
+        // Vertical collision
+        if (!Grid.IsTileCollision(destination + vert))
+            destination += vert;
 
         DestinationGrid = destination;
         return true;
