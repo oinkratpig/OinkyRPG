@@ -154,21 +154,30 @@ public partial class RPGNodeMoveable : RPGNode, ICollidable
     } // end _Set
 
     /// <summary>
-    /// Move player's grid position by one tile in given combination of directions.
+    /// Move player's grid position in given combination of directions.
     /// </summary>
-    public void Move(bool west, bool east, bool north, bool south)
+    /// <returns>If successful.</returns>
+    public bool MoveInDirection(bool west, bool east, bool north, bool south)
     {
         Vector2I destination = DestinationGrid + new Vector2I(-west.AsInt() + east.AsInt(), -north.AsInt() + south.AsInt());
 
         // If no movement made or would collide, don't move
-        if (!(west || east || north || south) ||
-            Grid.IsTileCollision(destination))
-        {
-            return;
-        }
+        if (Moving || !(west || east || north || south) || Grid.IsTileCollision(destination))
+            return false;
 
         DestinationGrid = destination;
+        return true;
 
-    } // end Move
+    } // end MoveInDirection
+
+    /// <summary>
+    /// Move player's grid position by one tile in given direction.
+    /// </summary>
+    /// <returns>If successful.</returns>
+    public bool MoveInDirection(Vector2I moveDirection)
+    {
+        return MoveInDirection(moveDirection.X < 0, moveDirection.X > 0, moveDirection.Y < 0, moveDirection.Y > 0);
+
+    } // end MoveInDirection
 
 } // end class RPGNodeMoveable
