@@ -1,31 +1,29 @@
 [gd_scene load_steps=5 format=3 uid="uid://basbs6pogyo6w"]
 
-[ext_resource type="Script" path="res://oinkyrpg/scripts/RPGGrid.cs" id="1_jdhvf"]
 [ext_resource type="Script" path="res://oinkyrpg/scripts/RPGNodeMoveable.cs" id="2_kntjl"]
 [ext_resource type="Texture2D" uid="uid://dy3k1gebfkwqc" path="res://icon.svg" id="3_ashki"]
-[ext_resource type="Script" path="res://oinkyrpg/scripts/RPGNodeStatic.cs" id="4_o5ero"]
+[ext_resource type="Script" path="res://oinkyrpg/scripts/examples/RPGExamplePlayerController.cs" id="4_qjbwd"]
+[ext_resource type="Script" path="res://oinkyrpg/scripts/RPGInteractable.cs" id="5_yivan"]
 
 [node name="root" type="Node"]
 
-[node name="RPGGrid" type="Node" parent="."]
-script = ExtResource("1_jdhvf")
-TileWidth = 32.0
-TileHeight = 32.0
-
-[node name="RPGNodeMoveable" type="Node2D" parent="RPGGrid"]
+[node name="Player" type="Node2D" parent="."]
 script = ExtResource("2_kntjl")
+InteractingEnabled = true
 
-[node name="Sprite2D" type="Sprite2D" parent="RPGGrid/RPGNodeMoveable"]
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_ashki")
 centered = false
 
-[node name="RPGNodeStatic" type="Node2D" parent="RPGGrid"]
-position = Vector2(320, 320)
-script = ExtResource("4_o5ero")
-GridPosition = Vector2i(10, 10)
+[node name="Controller" type="Node" parent="Player" node_paths=PackedStringArray("_player")]
+script = ExtResource("4_qjbwd")
+_player = NodePath("..")
 
-[node name="Sprite2D" type="Sprite2D" parent="RPGGrid/RPGNodeStatic"]
+[node name="Interactable" type="Node2D" parent="."]
+script = ExtResource("5_yivan")
+
+[node name="Sprite2D" type="Sprite2D" parent="Interactable"]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_ashki")
 centered = false

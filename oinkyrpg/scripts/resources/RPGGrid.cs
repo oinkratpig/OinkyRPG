@@ -1,22 +1,34 @@
-using Godot;
+﻿using Godot;
+using System.Collections.Generic;
 
 namespace OinkyRPG;
 
 /// <summary>
-/// A grid used by all <see cref="RPGNode"/> children.
+/// A grid used by all RPG nodes.
 /// </summary>
-[Tool]
-public partial class RPGGrid : Node
+[GlobalClass]
+public partial class RPGGrid : Resource
 {
     /// <summary>
     /// The width of each tile within the grid.
     /// </summary>
-    [Export] public float TileWidth { get; private set; } = 1;
+    [Export] public float TileWidth { get; private set; } = 32;
 
     /// <summary>
     /// The height of each tile within the grid.
     /// </summary>
-    [Export] public float TileHeight { get; private set; } = 1;
+    [Export] public float TileHeight { get; private set; } = 32;
+
+    /// <summary>
+    /// List of all active interactables within this grid.
+    /// </summary>
+    public List<RPGInteractable> Interactables { get; internal set; }
+
+    public RPGGrid()
+    {
+        Interactables = new();
+
+    } // end constructor
 
     /// <summary>
     /// Converts a global position to grid coordinates.
