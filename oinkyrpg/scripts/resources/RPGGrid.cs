@@ -30,10 +30,16 @@ public partial class RPGGrid : Resource
     /// </summary>
     public List<ICollidable> CollisionNodes { get; internal set; }
 
+    /// <summary>
+    /// Collection of all coordinates that are marked for collision.
+    /// </summary>
+    public List<Vector2I> CollisionPositions { get; set; }
+
     public RPGGrid()
     {
         Interactables = new();
         CollisionNodes = new();
+        CollisionPositions = new();
 
     } // end constructor
 
@@ -42,6 +48,7 @@ public partial class RPGGrid : Resource
     /// </summary>
     public bool IsTileCollision(Vector2I gridPosition)
     {
+        // Nodes
         foreach(ICollidable collidable in CollisionNodes)
         {
             if(collidable is RPGNodeMoveable moveable &&
@@ -55,6 +62,12 @@ public partial class RPGGrid : Resource
                 return true;
             }
         }
+
+        // Positions
+        foreach(Vector2I collidePosition in CollisionPositions)
+            if (gridPosition == collidePosition)
+                return true;
+
         return false;
 
     } // end IsTileCollision
