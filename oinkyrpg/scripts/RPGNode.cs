@@ -5,7 +5,6 @@ namespace OinkyRPG;
 /// <summary>
 /// An object taking space within a <see cref="RPGGrid"/>.
 /// </summary>
-[GlobalClass]
 public abstract partial class RPGNode : Node2D
 {
     /// <summary>
