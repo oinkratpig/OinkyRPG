@@ -13,7 +13,7 @@ public partial class RPGNodeStatic : RPGNode, ICollidable
     /// Whether or not <see cref="RPGNodeMoveable"/>s can collide with this.
     /// </summary>
     [Export]
-    public bool Collision
+    public bool CollisionObstacle
     {
         get { return _collision; }
         private set

@@ -23,7 +23,7 @@ public partial class RPGNodeMoveable : RPGNode, ICollidable
     /// Whether or not <see cref="RPGNodeMoveable"/>s can collide with this.
     /// </summary>
     [Export]
-    public bool Collision
+    public bool CollisionObstacle
     {
         get { return _collision; }
         private set
@@ -94,6 +94,8 @@ public partial class RPGNodeMoveable : RPGNode, ICollidable
 
     public override void _PhysicsProcess(double delta)
     {
+        if (Engine.IsEditorHint()) return;
+
         // Movement
         if(Moving)
         {
@@ -175,6 +177,7 @@ public partial class RPGNodeMoveable : RPGNode, ICollidable
             destination += vert;
 
         DestinationGrid = destination;
+        ActiveInteractable = null;
 
         return true;
 

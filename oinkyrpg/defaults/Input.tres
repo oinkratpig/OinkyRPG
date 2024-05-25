@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="RPGInput" load_steps=2 format=3 uid="uid://pjsrm1bbgqe4"]
+
+[ext_resource type="Script" path="res://oinkyrpg/scripts/resources/RPGInput.cs" id="1_0de5n"]
+
+[resource]
+script = ExtResource("1_0de5n")
+Interact = &"oinkyrpg_interact"
+MoveNorth = &"oinkyrpg_move_north"
+MoveSouth = &"oinkyrpg_move_south"
+MoveWest = &"oinkyrpg_move_west"
+MoveEast = &"oinkyrpg_move_east"

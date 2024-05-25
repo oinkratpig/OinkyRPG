@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://basbs6pogyo6w"]
 
-[ext_resource type="Script" path="res://oinkyrpg/scripts/RPGNodeMoveable.cs" id="2_kntjl"]
-[ext_resource type="Script" path="res://oinkyrpg/examples/scripts/RPGExamplePlayerController.cs" id="4_qjbwd"]
+[ext_resource type="Resource" uid="uid://pjsrm1bbgqe4" path="res://oinkyrpg/defaults/Input.tres" id="2_msqmx"]
+[ext_resource type="Script" path="res://oinkyrpg/scripts/RPGPlayerController.cs" id="4_qjbwd"]
 [ext_resource type="Resource" uid="uid://t4jkv4a3qwux" path="res://oinkyrpg/defaults/Grid.tres" id="5_03m1a"]
 [ext_resource type="Texture2D" uid="uid://bq440suwtrkk" path="res://oinkyrpg/examples/sprites/dapigboy.png" id="5_rvfmr"]
 [ext_resource type="Script" path="res://oinkyrpg/scripts/RPGInteractable.cs" id="5_yivan"]
@@ -17,25 +17,21 @@ anchor_mode = 0
 zoom = Vector2(1.35, 1.35)
 
 [node name="Player" type="Node2D" parent="."]
-position = Vector2(32, 64)
-script = ExtResource("2_kntjl")
+position = Vector2(64, 96)
+script = ExtResource("4_qjbwd")
+PlayerInput = ExtResource("2_msqmx")
 Interacting = true
-DestinationGrid = Vector2i(1, 2)
+DestinationGrid = Vector2i(2, 3)
 Grid = ExtResource("5_03m1a")
 
 [node name="Sprite2D" type="Sprite2D" parent="Player"]
 texture_filter = 1
 texture = ExtResource("5_rvfmr")
 
-[node name="Controller" type="Node" parent="Player" node_paths=PackedStringArray("_player")]
-script = ExtResource("4_qjbwd")
-_player = NodePath("..")
-
 [node name="Interactable" type="Node2D" parent="."]
 position = Vector2(160, 128)
-scale = Vector2(0.992366, 1)
 script = ExtResource("5_yivan")
-Collision = true
+CollisionObstacle = true
 GridPosition = Vector2i(5, 4)
 Grid = ExtResource("5_03m1a")
 

@@ -9,4 +9,7 @@
     <Compile Remove="oinkyrpg\scripts\defaults\**" />
     <EmbeddedResource Remove="oinkyrpg\scripts\defaults\**" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include=".editorconfig" />
+  </ItemGroup>
 </Project>
