@@ -11,13 +11,6 @@ namespace OinkyRPG;
 public partial class RPGTilemap : TileMap
 {
     /// <summary>
-    /// Layers that contain collision tiles.<br/>
-    /// Any tile in these layer will be marked as a collision tile.
-    /// </summary>
-    [Export]
-    public int[] CollisionLayers { get; private set; } = new int[0];
-
-    /// <summary>
     /// The grid being used.
     /// </summary>
     [Export]
@@ -33,6 +26,20 @@ public partial class RPGTilemap : TileMap
 
     private RPGGrid _grid;
 
+    /// <summary>
+    /// Layers that contain collision tiles.<br/>
+    /// Any tile in these layer will be marked as a collision tile.
+    /// </summary>
+    [Export]
+    public int[] CollisionLayers { get; private set; } = new int[0];
+
+    /// <summary>
+    /// Offset of the tilemap collisions relative to the grid.<br/>
+    /// The top-left of the tilemap will be placed at posision <see cref="CollisionOffset"/> in the <see cref="RPGGrid"/>.
+    /// </summary>
+    [Export]
+    public Vector2I CollisionOffset { get; private set; } = Vector2I.Zero;
+
     public override void _Ready()
     {
         if (Engine.IsEditorHint()) return;
@@ -40,25 +47,11 @@ public partial class RPGTilemap : TileMap
         foreach (int layer in CollisionLayers)
             foreach (Vector2I cell in GetUsedCells(layer))
             {
-                Vector2I gridPosition = Grid.ToGridCoords(GlobalPosition) + cell;
+                Vector2I gridPosition = cell + CollisionOffset;
                 if(!Grid.CollisionPositions.Contains(gridPosition))
                     Grid.CollisionPositions.Add(gridPosition);
             }
 
     } // end _Ready
-
-    public override bool _Set(StringName property, Variant value)
-    {
-        // Force position to always snap to grid
-        if (property == PropertyName.Position || property == PropertyName.GlobalPosition)
-        {
-            Vector2 newPosition = value.AsVector2();
-            GlobalPosition = new Vector2(newPosition.X.SnapTo(Grid.TileWidth), newPosition.Y.SnapTo(Grid.TileHeight));
-            return true;
-        }
-
-        return false;
-
-    } // end _Set
 
 } // end class RPGCollisionTilemap
