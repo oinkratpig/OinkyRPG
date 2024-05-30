@@ -82,7 +82,18 @@ public partial class RPGNodeMoveable : RPGNode, ICollidable
     /// Last angle of movement.<br/>
     /// (When destination is changed, the angle is calculated from current position to destination).
     /// </summary>
-    public float LookAngle { get; private set; }
+    public float LookAngle
+    {
+        get { return _lookAngle; }
+        private set
+        {
+            if(_lookAngle != value)
+            {
+                _lookAngle = value;
+                SetActiveInteractable();
+            }
+        }
+    }
 
     /// <summary>
     /// Interactable being faced at the moment.
@@ -91,6 +102,7 @@ public partial class RPGNodeMoveable : RPGNode, ICollidable
 
     private bool _collision;
     private Vector2 _destination;
+    private float _lookAngle;
 
     public override void _PhysicsProcess(double delta)
     {
@@ -107,32 +119,13 @@ public partial class RPGNodeMoveable : RPGNode, ICollidable
             if (MovementMode == MovementModes.Speed || MovementMode == MovementModes.Mixed)
                 GlobalPosition = GlobalPosition.MoveToward(Destination, SpeedValue);
 
-            // Stop
+            // Stop moving
             if (GlobalPosition.DistanceTo(Destination) <= 0.5f)
             {
                 Moving = false;
                 GlobalPosition = Destination;
-
-                // Find interactable in front of moveable
                 if (Interacting)
-                {
-                    Vector2I facing = new Vector2I(
-                        Mathf.RoundToInt(DestinationGrid.X + Mathf.Cos(Mathf.DegToRad(LookAngle))),
-                        Mathf.RoundToInt(DestinationGrid.Y + Mathf.Sin(Mathf.DegToRad(LookAngle))));
-
-                    RPGInteractable oldInteractable = ActiveInteractable;
-                    ActiveInteractable = null;
-                    foreach (RPGInteractable interactable in Grid.Interactables)
-                        if (interactable.GridPosition == facing || interactable.GlobalPosition == GlobalPosition)
-                        {
-                            ActiveInteractable = interactable;
-                            if(interactable != oldInteractable)
-                                interactable.OnBeginActive?.Invoke(this);
-                            break;
-                        }
-                    if (IsInstanceValid(oldInteractable) && ActiveInteractable != oldInteractable)
-                        oldInteractable.OnEndActive?.Invoke(this);
-                }
+                    SetActiveInteractable();
             }
         }
         
@@ -153,6 +146,31 @@ public partial class RPGNodeMoveable : RPGNode, ICollidable
         return false;
 
     } // end _Set
+
+    /// <summary>
+    /// Returns <see cref="RPGInteractable"/> being faced.
+    /// </summary>
+    private void SetActiveInteractable()
+    {
+        Vector2I facing = new Vector2I(
+                        Mathf.RoundToInt(DestinationGrid.X + Mathf.Cos(Mathf.DegToRad(LookAngle))),
+                        Mathf.RoundToInt(DestinationGrid.Y + Mathf.Sin(Mathf.DegToRad(LookAngle))));
+
+        RPGInteractable oldInteractable = ActiveInteractable;
+        ActiveInteractable = null;
+        foreach (RPGInteractable interactable in Grid.Interactables)
+            if (interactable.GridPosition == facing)
+            {
+                ActiveInteractable = interactable;
+                if (ActiveInteractable != interactable)
+                    interactable.OnBeginActive?.Invoke(this);
+                break;
+            }
+
+        if (IsInstanceValid(oldInteractable) && ActiveInteractable != oldInteractable)
+            oldInteractable.OnEndActive?.Invoke(this);
+
+    } // end SetActiveInteractable
 
     /// <summary>
     /// Move player's grid position in given combination of directions.
@@ -176,8 +194,12 @@ public partial class RPGNodeMoveable : RPGNode, ICollidable
         if (!Grid.IsTileCollision(destination + vert))
             destination += vert;
 
-        DestinationGrid = destination;
-        ActiveInteractable = null;
+        // Movement happened
+        if (destination != DestinationGrid)
+        {
+            DestinationGrid = destination;
+            ActiveInteractable = null;
+        }
 
         return true;
 
